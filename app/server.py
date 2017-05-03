@@ -137,8 +137,13 @@ def issue_token():
 def verify_token():
     data = request.get_json()
     valid = Token.is_valid(data['token'])
-    message = {"Authorized": valid}
-    return make_response(jsonify(message), status.HTTP_200_OK)
+    if valid:
+        message = {"Authorized": True}
+        rc = status.HTTP_200_OK
+    else:
+        message = {"Authorised": False}
+        rc = status.HTTP_401_UNAUTHORIZED
+    return make_response(jsonify(message), rc)
 
 # Utility Functions
 @app.route('/reset')
