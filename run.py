@@ -2,7 +2,6 @@ import os
 from app import app, server
 from app.models import User
 
-# Get environment options
 debug = (os.getenv('DEBUG', 'False') == 'True')
 port = os.getenv('PORT', '5000')
 
