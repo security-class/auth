@@ -1,0 +1,11 @@
+applications:
+- path: .
+  memory: 64M
+  instances: 1
+  domain: mybluemix.net
+  name: pcs-sam-auth
+  host: pcs-sam-auth
+  disk_quota: 1024M
+  buildpack: python_buildpack
+  services:
+  - Redis Cloud-sg
