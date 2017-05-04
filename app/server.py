@@ -41,8 +41,6 @@ def required_auth(*roles):
 def index():
     return jsonify(name='SAM backing User/AuthenticationREST API', version='1.0')
 
-# User Functions
-
 @app.route('/users', methods=['GET'])
 @required_auth('admin')
 def list_users():
@@ -65,6 +63,7 @@ def get_user(id):
 @app.route('/users', methods=['POST'])
 def create_user():
     data = request.get_json()
+    User.validate_user_post(data)
     user = User()
     user.deserialize(data['user_info'])
     user.set_password(data['password'])
@@ -116,6 +115,7 @@ def create_client():
 @app.route('/auth/token', methods=['POST'])
 def issue_token():
     data = request.get_json()
+    User.validate_user_login(data)
     user = User.find_or_404(email=data['email'])
     is_valid = user.check_password(data['password'])
 

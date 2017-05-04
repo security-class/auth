@@ -4,7 +4,7 @@ import json
 import bcrypt
 from jose import jwt
 from flask import url_for
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 from werkzeug.security import gen_salt
 
 from . import app
@@ -131,6 +131,40 @@ class User(object):
                     user.password = data['password']
                     return user
         return None
+
+    @staticmethod
+    def validate_user_post(data):
+        valid = False
+        try:
+            email = data['user_info']['email']
+            first_name = data['user_info']['first_name']
+            last_name = data['user_info']['last_name']
+            password = data['password']
+            valid = True
+        except KeyError:
+            valid = False
+        except TypeError:
+            valid = False
+
+        if not valid:
+            raise BadRequest("Not a valid post object for user.")
+        return valid
+
+    @staticmethod
+    def validate_user_login(data):
+        valid = False
+        try:
+            email = data['email']
+            password = data['password']
+            valid = True
+        except KeyError:
+            valid = False
+        except TypeError:
+            valid = False
+
+        if not valid:
+            raise BadRequest("Not a valid login object for user.")
+        return valid
 
 class Client(object):
     '''Resource endpoint registered with auth server to verify users.
