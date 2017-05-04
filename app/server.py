@@ -140,7 +140,7 @@ def verify_token():
     return make_response(jsonify(message), status.HTTP_200_OK)
 
 # Utility Functions
-@app.route('/reset')
+@app.route('/reset', methods=['POST'])
 @required_auth('admin')
 def reset():
     User.remove_all()
