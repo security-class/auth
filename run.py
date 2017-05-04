@@ -3,7 +3,7 @@ from app import app, server
 from app.models import User
 
 debug = (os.getenv('DEBUG', 'False') == 'True')
-port = os.getenv('PORT', '5000')
+port = os.getenv('PORT', '8888')
 
 if __name__ == "__main__":
     print "User service starting..."

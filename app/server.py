@@ -7,7 +7,7 @@ from jose import jwt
 from redis import Redis
 from redis.exceptions import ConnectionError
 from flask import Flask, Response, jsonify, request, json, url_for, make_response
-from flask_api import status    # HTTP Status Codes
+from flask_api import status
 from werkzeug.exceptions import NotFound, Unauthorized
 
 from models import Client, User, Token
@@ -134,16 +134,10 @@ def issue_token():
     return token.generate_jwt_token()
 
 @app.route('/auth/verify', methods=['POST'])
+@required_auth('admin user')
 def verify_token():
-    data = request.get_json()
-    valid = Token.is_valid(data['token'])
-    if valid:
-        message = {"Authorized": True}
-        rc = status.HTTP_200_OK
-    else:
-        message = {"Authorised": False}
-        rc = status.HTTP_401_UNAUTHORIZED
-    return make_response(jsonify(message), rc)
+    message = {"Authorized": True}
+    return make_response(jsonify(message), status.HTTP_200_OK)
 
 # Utility Functions
 @app.route('/reset')
